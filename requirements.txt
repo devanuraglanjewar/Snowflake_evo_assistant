@@ -1,8 +1,8 @@
-# Core UI framework
+# Core UI
 streamlit==1.26.0
 
-# Data handling
-pandas==2.2.2
+# Data handling (prebuilt wheels available)
+pandas==2.1.4
 numpy==1.26.4
 
 # ML / Embeddings
@@ -22,7 +22,7 @@ snowflake-connector-python==3.10.0
 # LLM & AI
 ollama==0.1.8
 transformers==4.36.2
-torch==2.1.0
+torch==2.0.1
 accelerate==0.23.0
 
 # Visualization
