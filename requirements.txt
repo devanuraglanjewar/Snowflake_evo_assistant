@@ -5,6 +5,7 @@ sentence-transformers
 faiss-cpu
 requests
 python-dotenv
+streamlit-authenticator==0.3.2
 snowflake-connector-python
 ollama
 fastapi
@@ -12,3 +13,4 @@ uvicorn
 transformers
 torch
 pillow==9.5.0
+altair
