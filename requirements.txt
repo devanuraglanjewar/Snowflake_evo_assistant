@@ -1,32 +1,15 @@
-# Core UI
 streamlit==1.26.0
-
-# Data handling (prebuilt wheels available)
-pandas==2.1.4
+pandas==2.2.2
 numpy==1.26.4
-
-# ML / Embeddings
-sentence-transformers==2.2.2
-faiss-cpu==1.7.4
-
-# API & requests
-requests==2.31.0
+sentence-transformers==2.7.0
+faiss-cpu==1.8.0.post1
+requests==2.32.3
 python-dotenv==1.0.1
-
-# Authentication
 streamlit-authenticator==0.3.2
-
-# Database
-snowflake-connector-python==3.10.0
-
-# LLM & AI
+snowflake-connector-python==3.12.3
 ollama==0.1.8
-transformers==4.36.2
-torch==2.0.1
-accelerate==0.23.0
-
-# Visualization
-altair==5.2.0
-
-# Images
-pillow==9.5.0
+fastapi==0.115.0
+uvicorn==0.30.6
+transformers==4.44.2
+torch==2.4.0
+pillow==10.4.0
