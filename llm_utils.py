@@ -1,82 +1,48 @@
-"""
-llm_utils.py
-Handles local Ollama chat or remote HTTP model endpoint.
-"""
-
+# llm_utils.py
 import os
-import json
 import requests
+import streamlit as st
 
-try:
-    import streamlit as st
-    _HAS_ST = True
-except Exception:
-    _HAS_ST = False
-
-# Helper to read secrets (Streamlit secrets prioritized)
 def _DEF(k, d=None):
-    if _HAS_ST:
+    try:
         return st.secrets.get(k, os.getenv(k, d))
-    return os.getenv(k, d)
+    except Exception:
+        return os.getenv(k, d)
 
 LLM_PROVIDER = _DEF("LLM_PROVIDER", "ollama")  # "ollama" or "remote"
-OLLAMA_HOST = _DEF("OLLAMA_HOST", "http://localhost:11434")
-OLLAMA_MODEL = _DEF("OLLAMA_MODEL", "llama3.1:8b")
 LLM_ENDPOINT = _DEF("LLM_ENDPOINT", "")
 LLM_API_KEY = _DEF("LLM_API_KEY", "")
 
-SYSTEM_INSTRUCTIONS = (
-    "You are a Snowflake schema evolution assistant. Be concise, precise, and include runnable SQL when asked."
-)
-
-
-def _chat_ollama(messages):
+def chat_llm(prompt: str) -> str:
     """
-    Chat via local Ollama HTTP API (fallback). Expects messages list like OpenAI chat.
+    Send prompt to LLM (local Ollama or remote Hugging Face API).
     """
-    url = f"{OLLAMA_HOST}/api/chat"
-    payload = {"model": OLLAMA_MODEL, "messages": messages, "stream": False}
-    r = requests.post(url, json=payload, timeout=120)
-    r.raise_for_status()
-    data = r.json()
-    # Handle Ollama response variants
-    if isinstance(data, dict) and "message" in data:
-        return data["message"].get("content", "")
-    # support list style
-    if isinstance(data, list):
-        return "".join([chunk.get("message", {}).get("content", "") for chunk in data])
-    return ""
+    if LLM_PROVIDER == "ollama":
+        import ollama
+        resp = ollama.chat(model=_DEF("OLLAMA_MODEL", "llama3.1:8b-instruct"),
+                           messages=[{"role": "user", "content": prompt}])
+        return resp["message"]["content"]
 
+    elif LLM_PROVIDER == "remote":
+        if not LLM_ENDPOINT or not LLM_API_KEY:
+            return "❌ Hugging Face endpoint or API key not set."
 
-def _chat_remote(messages):
-    """
-    Chat via a remote HTTP endpoint (simple JSON contract).
-    POST { messages: [...], stream: false } -> { text: "..." }
-    """
-    headers = {"Content-Type": "application/json"}
-    if LLM_API_KEY:
-        headers["Authorization"] = f"Bearer {LLM_API_KEY}"
-    payload = {"messages": messages, "stream": False}
-    r = requests.post(LLM_ENDPOINT, headers=headers, json=payload, timeout=120)
-    r.raise_for_status()
-    data = r.json()
-    if isinstance(data, dict):
-        if "text" in data:
-            return data["text"]
-        if "choices" in data and data["choices"]:
-            return data["choices"][0].get("message", {}).get("content", "")
-    return ""
+        headers = {"Authorization": f"Bearer {LLM_API_KEY}"}
+        payload = {"inputs": prompt}
 
+        try:
+            resp = requests.post(LLM_ENDPOINT, headers=headers, json=payload, timeout=60)
+            if resp.status_code != 200:
+                return f"❌ Hugging Face API error {resp.status_code}: {resp.text}"
 
-def chat_llm(user_prompt: str, system_instructions: str = SYSTEM_INSTRUCTIONS) -> str:
-    """
-    Simple wrapper: system + user messages, returns plain text reply.
-    """
-    messages = [
-        {"role": "system", "content": system_instructions},
-        {"role": "user", "content": user_prompt},
-    ]
-    if LLM_PROVIDER == "remote" and LLM_ENDPOINT:
-        return _chat_remote(messages)
-    # default local Ollama
-    return _chat_ollama(messages)
+            data = resp.json()
+            # Some models return list of dicts
+            if isinstance(data, list) and "generated_text" in data[0]:
+                return data[0]["generated_text"]
+            return str(data)
+
+        except Exception as e:
+            return f"❌ Error calling Hugging Face API: {e}"
+
+    else:
+        return "❌ Invalid LLM_PROVIDER. Use 'ollama' or 'remote'."
