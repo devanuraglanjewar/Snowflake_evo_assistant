@@ -1,0 +1,130 @@
+🚀 Installation Guide – AI-Powered Snowflake Schema Evolution Assistant
+1️⃣ Prerequisites
+
+Before installing, make sure your office laptop/VDI has:
+
+Python 3.9+ (recommended: Python 3.11)
+
+Git installed and accessible in PATH
+
+Snowflake account credentials
+
+Access to Streamlit web app (VDI should allow localhost:8501)
+
+2️⃣ Clone the Repository
+
+Open PowerShell / Command Prompt inside your VDI.
+
+Run:
+
+git clone https://github.com/<your-username>/ai-snowflake-assistant.git
+cd ai-snowflake-assistant
+
+3️⃣ Create & Activate Virtual Environment
+On Windows (PowerShell):
+python -m venv .venv
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\.venv\Scripts\activate
+
+On Linux / Mac:
+python3 -m venv .venv
+source .venv/bin/activate
+
+4️⃣ Install Dependencies
+
+Install all required packages:
+
+pip install --upgrade pip
+pip install -r requirements.txt
+
+
+This includes:
+
+Streamlit
+
+Snowflake connector
+
+Pandas, Numpy
+
+Ollama / LLM support
+
+Sentence-transformers
+
+Altair (for charts)
+
+5️⃣ Configure Secrets
+
+Create the secrets.toml file:
+
+📂 Inside your project:
+
+ai-snowflake-assistant/.streamlit/secrets.toml
+
+
+✍️ Add this content:
+
+# LLM Configuration
+LLM_PROVIDER = "ollama"
+OLLAMA_HOST = "http://localhost:11434"
+OLLAMA_MODEL = "llama3:8b"
+
+# Embedding Model
+EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
+
+# Snowflake Credentials
+SNOWFLAKE_ACCOUNT = "<your_account_id>"
+SNOWFLAKE_USER = "<your_user>"
+SNOWFLAKE_PASSWORD = "<your_password>"
+SNOWFLAKE_WAREHOUSE = "COMPUTE_WH"
+SNOWFLAKE_DATABASE = "HACKATHON_DB"
+SNOWFLAKE_SCHEMA = "PUBLIC"
+
+
+🔑 Replace <your_account_id>, <your_user>, <your_password> with your office Snowflake credentials.
+
+6️⃣ Run Ollama (if using locally)
+
+If your project uses Ollama (llama3) locally:
+
+ollama pull llama3:8b
+ollama serve
+
+
+(Keep this running in a separate terminal)
+
+7️⃣ Start the Application
+
+From inside the project folder:
+
+streamlit run app.py
+
+
+This will launch the app at:
+👉 http://localhost:8501
+
+8️⃣ Verify Installation
+
+✅ Features you should test:
+
+Schema Analysis (Local Demo) → Upload CSV/JSON
+
+Snowflake Live Mode → Fetch schema from your office Snowflake DB
+
+Chatbot → Ask AI questions about schema evolution
+
+FAQ Tab → Try pre-loaded FAQs
+
+Charts → Verify line chart is displayed in red (#ff2b2b)
+
+9️⃣ Troubleshooting
+
+ExecutionPolicy Error (Windows VDI):
+
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+
+
+Secrets not found: Ensure .streamlit/secrets.toml exists.
+
+Snowflake connection error: Verify network access + credentials.
+
+LLM timeout: Ensure ollama serve is running.

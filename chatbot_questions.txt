@@ -1,0 +1,63 @@
+🔹 Schema Change / Evolution
+
+“What changes were made between the previous schema and the live schema?”
+
+“Explain why the AGE column was added in the latest schema.”
+
+“List all new columns in my Employees table compared to the snapshot.”
+
+“Which columns are missing in the latest schema compared to before?”
+
+“Summarize all schema changes in plain English for a manager.”
+--------------------------------------------------------------------------------------
+
+🔹 SQL Generation
+
+“Generate SQL to add the AGE column to my Employees table.”
+
+“Write ALTER TABLE commands to align the old schema with the new one.”
+
+“Create SQL migration script to resolve datatype conflicts.”
+
+“Generate Snowflake DDL to drop missing columns safely.”
+
+“Give me a single ALTER TABLE script for all detected changes.”
+
+-----------------------------------------------------------------------------------
+🔹 Snowflake-Specific
+
+“How do I enable schema evolution in Snowflake?”
+
+“Which file formats support schema evolution in Snowflake?”
+
+“Does schema evolution work with INSERT statements in Snowflake?”
+
+“Explain how schema evolution interacts with Snowpipe.”
+
+“What are the limitations of schema evolution in Snowflake?”
+
+---------------------------------------------------------------------------------------
+🔹 Data Validation
+
+“Are all required employee attributes present in the live schema?”
+
+“Highlight critical columns missing from the new schema.”
+
+“Compare the EMPLOYEES table schema between DEV and PROD databases.”
+
+“Check if my schema supports reporting on employee age.”
+
+“Explain in detail what conflicts were found in my last comparison.”
+
+-------------------------------------------------------------------------------------------------
+🔹 Follow-up Context Questions (tests session memory)
+
+“Explain again, but only list new columns.”
+
+“Now generate SQL only for datatype conflicts.”
+
+“Summarize the changes in one sentence.”
+
+“Give me an example query to validate that AGE column has correct values.”
+
+“Which columns are the most likely to cause downstream ETL errors?”
