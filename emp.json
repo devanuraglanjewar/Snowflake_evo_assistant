@@ -1,0 +1,26 @@
+[
+  {
+    "first_name": "Anurag",
+    "last_name": "Lanjewar",
+    "email": "anurag@example.com",
+    "address": "123 MG Road",
+    "city": "Nagpur",
+    "job_start_date": "2024-05-01"
+  },
+  {
+    "first_name": "Riya",
+    "last_name": "Sharma",
+    "email": "riya.sharma@example.com",
+    "address": "456 Residency Road",
+    "city": "Pune",
+    "job_start_date": "2023-11-15"
+  },
+  {
+    "first_name": "Amit",
+    "last_name": "Patil",
+    "email": "amit.patil@example.com",
+    "address": "789 Bandra Street",
+    "city": "Mumbai",
+    "job_start_date": "2022-07-20"
+  }
+]
